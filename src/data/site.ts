@@ -24,7 +24,6 @@ export function buildProductWhatsAppUrl(productName: string) {
 }
 
 export const navigation = [
-  { href: "/", label: "Inicio" },
   { href: "/empresa/", label: "Empresa" },
   { href: "/tienda/", label: "Tienda" },
   { href: "/generadores/", label: "Generadores" },

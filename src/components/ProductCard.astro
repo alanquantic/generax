@@ -1,0 +1,59 @@
+---
+import type { Product } from "../data/catalog";
+import { buildProductWhatsAppUrl } from "../data/site";
+
+interface Props {
+  product: Product;
+}
+
+const { product } = Astro.props;
+const whatsappUrl = buildProductWhatsAppUrl(product.shortName);
+---
+
+<article class="product-card">
+  <img src={product.image} alt={product.shortName} loading="lazy" />
+  <div class="product-card__body">
+    <p class="product-card__eyebrow">{product.segment}</p>
+    <h3>
+      <a href={`/generadores/${product.routeSlug}/`}>{product.shortName}</a>
+    </h3>
+    <p>{product.summary}</p>
+    <div class="product-card__price">
+      <span>Precio publicado</span>
+      <strong>{product.formattedPrice}</strong>
+      <small>{product.currency}</small>
+    </div>
+    <dl class="product-card__specs">
+      <div>
+        <dt>Capacidad</dt>
+        <dd>{product.capacityKw} kW{product.kva ? ` / ${product.kva} kVA` : ""}</dd>
+      </div>
+      <div>
+        <dt>Combustible</dt>
+        <dd>{product.fuel}</dd>
+      </div>
+      <div>
+        <dt>Voltaje</dt>
+        <dd>{product.voltage}</dd>
+      </div>
+      <div>
+        <dt>Motor</dt>
+        <dd>{product.motor}</dd>
+      </div>
+    </dl>
+    <div class="product-card__actions">
+      <a class="button button--ghost" href={`/generadores/${product.routeSlug}/`}>
+        Ver detalle
+      </a>
+      <a
+        class="button button--primary"
+        href={whatsappUrl}
+        target="_blank"
+        rel="noreferrer"
+        data-whatsapp-context={`product-card-${product.routeSlug}`}
+      >
+        Cotizar por WhatsApp
+      </a>
+    </div>
+  </div>
+</article>

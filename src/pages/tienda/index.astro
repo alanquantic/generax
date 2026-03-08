@@ -1,0 +1,131 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import ProductCard from "../../components/ProductCard.astro";
+import SectionHeading from "../../components/SectionHeading.astro";
+import { products } from "../../data/catalog";
+import { buildWhatsAppUrl } from "../../data/site";
+import {
+  breadcrumbSchema,
+  itemListSchema,
+  organizationSchema,
+  webPageSchema,
+  websiteSchema,
+} from "../../data/schema";
+
+const whatsappUrl = buildWhatsAppUrl("Hola, quiero atención sobre productos y precios de la tienda Generax.");
+const lowestPrice = [...products].sort((left, right) => left.price - right.price)[0];
+const highestPrice = [...products].sort((left, right) => right.price - left.price)[0];
+
+const schema = [
+  organizationSchema(),
+  websiteSchema(),
+  webPageSchema(
+    "Tienda | GENERAX",
+    "Tienda de generadores Generax con fotos, capacidades, precios publicados y atención comercial por WhatsApp.",
+    "/tienda/",
+    "CollectionPage",
+  ),
+  breadcrumbSchema([
+    { name: "Inicio", path: "/" },
+    { name: "Tienda", path: "/tienda/" },
+  ]),
+  itemListSchema(
+    "Tienda GENERAX",
+    products.map((product) => ({
+      name: product.shortName,
+      path: `/generadores/${product.routeSlug}/`,
+    })),
+  ),
+];
+---
+
+<BaseLayout
+  title="Tienda | GENERAX"
+  description="Tienda de generadores Generax con fotos, capacidades, precios publicados y atención comercial por WhatsApp."
+  path="/tienda/"
+  image="/media/GENERAX-Generador-Electrico9.jpg"
+  imageAlt="Tienda de generadores Generax con equipos industriales"
+  schema={schema}
+>
+  <section class="page-hero">
+    <div class="container page-hero__grid">
+      <div class="page-hero__copy">
+        <div class="breadcrumb">
+          <a href="/">Inicio</a>
+          <span>/</span>
+          <span>Tienda</span>
+        </div>
+        <span class="hero__eyebrow">Tienda Generax</span>
+        <h1>Productos con fotos, capacidades y precios publicados.</h1>
+        <p>
+          Consulta los generadores disponibles en tienda, revisa imágenes reales del equipo, compara capacidades y da el
+          siguiente paso por WhatsApp con atención comercial directa.
+        </p>
+        <div class="hero__actions">
+          <a
+            class="button button--primary"
+            href={whatsappUrl}
+            target="_blank"
+            rel="noreferrer"
+            data-whatsapp-context="tienda-hero-primary"
+          >
+            Hablar por WhatsApp
+          </a>
+          <a class="button button--ghost" href="#catalogo-tienda">
+            Ver productos
+          </a>
+        </div>
+        <ul class="clean-list">
+          <li>{products.length} productos activos en catálogo.</li>
+          <li>Precios publicados desde {lowestPrice.formattedPrice} hasta {highestPrice.formattedPrice}.</li>
+          <li>Fotos reales del equipo y acceso a ficha individual por producto.</li>
+        </ul>
+      </div>
+
+      <div class="page-hero__card hero__visual">
+        <img
+          src="/media/GENERAX-Generador-Electrico9.jpg"
+          alt="Generador Generax disponible en tienda"
+          loading="eager"
+          fetchpriority="high"
+        />
+      </div>
+    </div>
+  </section>
+
+  <section class="section-block section-block--light light-surface">
+    <div class="container">
+      <div class="services-grid">
+        <article class="content-panel">
+          <h3>Fotos reales del producto</h3>
+          <p>La tienda muestra imágenes del equipo para que puedas revisar formato, caseta y presencia física.</p>
+        </article>
+        <article class="content-panel">
+          <h3>Precios publicados</h3>
+          <p>Todos los productos de esta sección muestran precio en la moneda publicada en el catálogo actual.</p>
+        </article>
+        <article class="content-panel">
+          <h3>Atención comercial directa</h3>
+          <p>Cada producto te permite abrir WhatsApp con contexto para continuar tu cotización sin fricción.</p>
+        </article>
+        <article class="content-panel">
+          <h3>Ficha individual</h3>
+          <p>Cada generador tiene su propia página con galería, especificaciones, precio y CTA comercial.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="catalogo-tienda" class="section-block section-block--light light-surface">
+    <div class="container">
+      <SectionHeading
+        eyebrow="Catálogo de tienda"
+        title="Generadores disponibles en tienda"
+        intro="Explora capacidades, combustible, precio publicado y abre la conversación comercial desde cada producto."
+      />
+      <div class="catalog-grid">
+        {products.map((product) => <ProductCard product={product} />)}
+      </div>
+    </div>
+  </section>
+</BaseLayout>

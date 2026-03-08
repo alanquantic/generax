@@ -1,0 +1,154 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import SectionHeading from "../components/SectionHeading.astro";
+import { buildWhatsAppUrl } from "../data/site";
+import { breadcrumbSchema, organizationSchema, serviceSchema, webPageSchema, websiteSchema } from "../data/schema";
+
+const whatsappUrl = buildWhatsAppUrl("Hola, quiero conocer más sobre Generax y sus soluciones de energía.");
+
+const differentiators = [
+  {
+    title: "Experiencia técnica y comercial",
+    body: "GENERAX nació integrando especialistas en generación eléctrica, operación comercial y soluciones para continuidad energética.",
+  },
+  {
+    title: "Enfoque en continuidad operativa",
+    body: "Atendemos industrias, comercios y proyectos donde la energía no es opcional y una interrupción representa riesgo real.",
+  },
+  {
+    title: "Atención cercana y postventa",
+    body: "La propuesta de valor no termina con la venta: buscamos soporte, seguimiento y respuesta ágil durante todo el proyecto.",
+  },
+];
+
+const schema = [
+  organizationSchema(),
+  websiteSchema(),
+  webPageSchema(
+    "Empresa | GENERAX",
+    "Conoce la historia de Generax, su enfoque en continuidad operativa y su propuesta de valor para proyectos industriales y comerciales en México y Latinoamérica.",
+    "/empresa/",
+    "AboutPage",
+  ),
+  breadcrumbSchema([
+    { name: "Inicio", path: "/" },
+    { name: "Empresa", path: "/empresa/" },
+  ]),
+  serviceSchema(
+    "Información corporativa y propuesta de valor",
+    "Historia, enfoque operativo y propuesta comercial de Generax para continuidad energética en México y Latinoamérica.",
+    "/empresa/",
+  ),
+];
+---
+
+<BaseLayout
+  title="Empresa | GENERAX"
+  description="Conoce la historia de Generax, su enfoque en continuidad operativa y su propuesta de valor para proyectos industriales y comerciales en México y Latinoamérica."
+  path="/empresa/"
+  image="/media/IMG_5965-LA-EMPRESA-min.jpeg"
+  imageAlt="Equipo y operación comercial de Generax"
+  schema={schema}
+>
+  <section class="page-hero">
+    <div class="container page-hero__grid">
+      <div class="page-hero__copy">
+        <div class="breadcrumb">
+          <a href="/">Inicio</a>
+          <span>/</span>
+          <span>Empresa</span>
+        </div>
+        <span class="hero__eyebrow">Empresa</span>
+        <h1>Historia, visión y propuesta de valor de Generax.</h1>
+        <p>
+          GENERAX nació con un propósito claro: garantizar el suministro de energía confiable para industrias, comercios
+          y proyectos en México y Latinoamérica.
+        </p>
+        <div class="hero__actions">
+          <a
+            class="button button--primary"
+            href={whatsappUrl}
+            target="_blank"
+            rel="noreferrer"
+            data-whatsapp-context="empresa-hero-primary"
+          >
+            Hablar con Generax
+          </a>
+          <a class="button button--ghost" href="#historia-generax">
+            Ver historia
+          </a>
+        </div>
+      </div>
+
+      <div class="page-hero__card hero__visual">
+        <img
+          src="/media/IMG_5965-LA-EMPRESA-min.jpeg"
+          alt="Equipo y operación comercial de Generax"
+          loading="eager"
+          fetchpriority="high"
+        />
+      </div>
+    </div>
+  </section>
+
+  <section id="historia-generax" class="section-block section-block--light light-surface">
+    <div class="container content-grid">
+      <article class="content-panel">
+        <SectionHeading
+          eyebrow="Historia de Generax Power"
+          title="Cómo nació la marca."
+          intro="El origen de GENERAX combina experiencia técnica, visión comercial y un compromiso claro con la calidad."
+        />
+        <p>
+          Conscientes de los retos energéticos en la región, un grupo de especialistas en generación eléctrica y soluciones
+          energéticas fundó GENERAX para atender necesidades reales del mercado, desde aplicaciones residenciales hasta
+          exigentes entornos industriales.
+        </p>
+        <p>
+          El nombre GENERAX refleja potencia, continuidad y confianza. Cada equipo que se comercializa está orientado a
+          mantener operaciones activas, respaldado por atención especializada y un enfoque práctico de solución.
+        </p>
+      </article>
+
+      <article class="content-panel">
+        <img src="/media/Generadores-a-diesel-mexico-2-1536x1152-1.jpeg" alt="Generadores Generax en operación" />
+      </article>
+    </div>
+  </section>
+
+  <section class="section-block section-block--light light-surface">
+    <div class="container">
+      <SectionHeading
+        eyebrow="Generax hoy"
+        title="Una marca enfocada en confianza, soporte y energía continua."
+        intro="Hoy la empresa se presenta como un aliado estratégico para operaciones donde la energía es crítica."
+      />
+      <div class="value-grid">
+        {differentiators.map((item) => (
+          <article class="content-panel">
+            <h3>{item.title}</h3>
+            <p>{item.body}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section-block section-block--light light-surface">
+    <div class="container quote-band">
+      <div>
+        <span class="chip">Mensaje de marca</span>
+        <h2>Más allá de vender generadores, GENERAX entrega confianza, soporte y soluciones reales de energía.</h2>
+      </div>
+      <a
+        class="button button--primary"
+        href={whatsappUrl}
+        target="_blank"
+        rel="noreferrer"
+        data-whatsapp-context="empresa-quote-band"
+      >
+        Iniciar conversación
+      </a>
+    </div>
+  </section>
+</BaseLayout>

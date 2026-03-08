@@ -1,0 +1,18 @@
+---
+interface Props {
+  items: { value: string; label: string }[];
+}
+
+const { items } = Astro.props;
+---
+
+<section class="stat-strip">
+  <div class="container stat-strip__grid">
+    {items.map((item) => (
+      <article>
+        <strong>{item.value}</strong>
+        <span>{item.label}</span>
+      </article>
+    ))}
+  </div>
+</section>

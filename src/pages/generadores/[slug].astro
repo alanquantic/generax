@@ -1,0 +1,190 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import LeadForm from "../../components/LeadForm.astro";
+import ProductCard from "../../components/ProductCard.astro";
+import SectionHeading from "../../components/SectionHeading.astro";
+import { products } from "../../data/catalog";
+import { buildProductWhatsAppUrl } from "../../data/site";
+import { breadcrumbSchema, organizationSchema, productSchema, webPageSchema, websiteSchema } from "../../data/schema";
+
+export function getStaticPaths() {
+  return products.map((product) => ({
+    params: { slug: product.routeSlug },
+    props: { product },
+  }));
+}
+
+const { product } = Astro.props;
+
+const relatedProducts = products
+  .filter((item) => item.routeSlug !== product.routeSlug)
+  .slice(0, 3);
+const productWhatsappUrl = buildProductWhatsAppUrl(product.shortName);
+
+const useCases =
+  product.capacityKw <= 50
+    ? ["Comercio y retail", "Respaldo para oficinas", "Pequeño industrial", "Aplicaciones con arranque automático"]
+    : product.capacityKw <= 170
+      ? ["Manufactura media", "Hoteles", "Logística", "Servicios con operación sensible"]
+      : ["Hospitales", "Plantas industriales", "Infraestructura crítica", "Operación de alta demanda"];
+
+const schema = [
+  organizationSchema(),
+  websiteSchema(),
+  webPageSchema(
+    `${product.shortName} | GENERAX`,
+    product.summary,
+    `/generadores/${product.routeSlug}/`,
+  ),
+  breadcrumbSchema([
+    { name: "Inicio", path: "/" },
+    { name: "Generadores", path: "/generadores/" },
+    { name: product.shortName, path: `/generadores/${product.routeSlug}/` },
+  ]),
+  productSchema(product),
+];
+---
+
+<BaseLayout
+  title={`${product.shortName} | GENERAX`}
+  description={product.summary}
+  path={`/generadores/${product.routeSlug}/`}
+  image={product.image}
+  imageAlt={product.shortName}
+  ogType="product"
+  schema={schema}
+>
+  <section class="page-hero">
+    <div class="container page-hero__grid">
+      <div class="page-hero__copy">
+        <div class="breadcrumb">
+          <a href="/">Inicio</a>
+          <span>/</span>
+          <a href="/generadores/">Generadores</a>
+          <span>/</span>
+          <span>{product.capacityKw} kW</span>
+        </div>
+        <span class="hero__eyebrow">{product.segment}</span>
+        <h1>{product.shortName}</h1>
+        <p>{product.summary}</p>
+        <div class="hero__price">
+          <span>Precio publicado</span>
+          <strong>{product.formattedPrice}</strong>
+          <small>{product.currency}</small>
+        </div>
+        <ul class="clean-list">
+          <li>{product.capacityKw} kW{product.kva ? ` / ${product.kva} kVA` : ""}</li>
+          <li>{product.fuel}</li>
+          <li>{product.voltage}</li>
+          <li>Aplicación comercial e industrial según el proyecto</li>
+        </ul>
+        <div class="hero__actions">
+          <a
+            class="button button--primary"
+            href={productWhatsappUrl}
+            target="_blank"
+            rel="noreferrer"
+            data-whatsapp-context={`product-hero-${product.routeSlug}`}
+          >
+            Cotizar por WhatsApp
+          </a>
+          <a class="button button--ghost" href="#especificaciones">
+            Ver especificaciones
+          </a>
+        </div>
+      </div>
+
+      <div class="page-hero__card hero__visual">
+        <img src={product.image} alt={product.shortName} loading="eager" fetchpriority="high" />
+      </div>
+    </div>
+  </section>
+
+  <section id="especificaciones" class="section-block section-block--light light-surface">
+    <div class="container content-grid">
+      <article class="content-panel">
+        <SectionHeading
+          eyebrow="Especificación"
+          title="Información comercial y técnica del equipo."
+          intro="Consulta la capacidad, el combustible y las especificaciones principales para evaluar esta opción."
+        />
+
+        <div class="spec-grid">
+          <article>
+            <strong>Precio publicado</strong>
+            <span>{product.formattedPrice} {product.currency}</span>
+          </article>
+          <article>
+            <strong>Capacidad</strong>
+            <span>{product.capacityKw} kW{product.kva ? ` / ${product.kva} kVA` : ""}</span>
+          </article>
+          <article>
+            <strong>Combustible</strong>
+            <span>{product.fuel}</span>
+          </article>
+          <article>
+            <strong>Voltaje</strong>
+            <span>{product.voltage}</span>
+          </article>
+          <article>
+            <strong>Motor</strong>
+            <span>{product.motor}</span>
+          </article>
+        </div>
+
+        <div class="spacer-top">
+          <h3>Especificaciones principales</h3>
+          <ul class="clean-list">
+            {product.specs.map((spec) => <li>{spec}</li>)}
+          </ul>
+        </div>
+      </article>
+
+      <LeadForm
+        compact={true}
+        source={`product-${product.routeSlug}`}
+        title={`Cotizar ${product.capacityKw} kW`}
+        intro="Te atendemos por WhatsApp para revisar capacidad, fecha de entrega, instalación y necesidades de tu proyecto."
+      />
+    </div>
+  </section>
+
+  <section class="section-block section-block--light light-surface">
+    <div class="container content-grid">
+      <article class="content-panel">
+        <SectionHeading
+          eyebrow="Aplicaciones sugeridas"
+          title="Usos recomendados para esta capacidad."
+          intro="Este equipo suele cotizarse en operaciones donde la continuidad eléctrica es prioritaria."
+        />
+        <ul class="clean-list">
+          {useCases.map((item) => <li>{item}</li>)}
+        </ul>
+      </article>
+
+      <article class="content-panel">
+        <SectionHeading
+          eyebrow="Galería"
+          title="Galería del equipo"
+          intro="Imágenes de referencia del modelo disponible en esta capacidad."
+        />
+        <div class="spec-grid">
+          {product.gallery.slice(0, 4).map((image) => <img src={image} alt={product.shortName} />)}
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="section-block section-block--light light-surface">
+    <div class="container">
+      <SectionHeading
+        eyebrow="Relacionados"
+        title="Equipos relacionados"
+        intro="Revisa otras capacidades cercanas para comparar tu mejor opción."
+      />
+      <div class="catalog-grid">
+        {relatedProducts.map((item) => <ProductCard product={item} />)}
+      </div>
+    </div>
+  </section>
+</BaseLayout>

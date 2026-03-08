@@ -1,0 +1,231 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import FaqList from "../components/FaqList.astro";
+import LeadForm from "../components/LeadForm.astro";
+import ProductCard from "../components/ProductCard.astro";
+import SectionHeading from "../components/SectionHeading.astro";
+import StatStrip from "../components/StatStrip.astro";
+import { featuredProducts } from "../data/catalog";
+import {
+  buildWhatsAppUrl,
+  companyMetrics,
+  homeFaqs,
+  industrySolutions,
+  siteConfig,
+  trustBar,
+  valueProps,
+} from "../data/site";
+import {
+  breadcrumbSchema,
+  faqSchema,
+  itemListSchema,
+  organizationSchema,
+  serviceSchema,
+  webPageSchema,
+  websiteSchema,
+} from "../data/schema";
+
+const whatsappUrl = buildWhatsAppUrl("Hola, necesito una cotización para un generador o transformador Generax.");
+const schema = [
+  organizationSchema(),
+  websiteSchema(),
+  webPageSchema(
+    "GENERAX | Generadores eléctricos y transformadores industriales en México",
+    "Venta de generadores eléctricos, transformadores industriales y soluciones de energía de respaldo para industria, comercio, hoteles, hospitales y proyectos especiales en México.",
+    "/",
+  ),
+  breadcrumbSchema([{ name: "Inicio", path: "/" }]),
+  serviceSchema(
+    "Sistemas de energía de respaldo y continuidad operativa",
+    "Venta consultiva de generadores, transformadores y servicios técnicos para industria e infraestructura crítica en México.",
+    "/",
+  ),
+  faqSchema(homeFaqs),
+  itemListSchema(
+    "Generadores destacados GENERAX",
+    featuredProducts.map((product) => ({
+      name: product.shortName,
+      path: `/generadores/${product.routeSlug}/`,
+    })),
+  ),
+];
+---
+
+<BaseLayout
+  title="GENERAX | Generadores eléctricos y transformadores industriales en México"
+  description="Venta de generadores eléctricos, transformadores industriales y soluciones de energía de respaldo para industria, comercio, hoteles, hospitales y proyectos especiales en México."
+  path="/"
+  image={siteConfig.ogImage}
+  imageAlt="Generador Generax industrial en nave para proyectos de continuidad operativa"
+  schema={schema}
+>
+  <section class="hero">
+    <div class="container hero__grid">
+      <div class="hero__copy">
+        <span class="hero__eyebrow">Generadores y transformadores industriales</span>
+        <h1>Venta de generadores eléctricos y transformadores en México.</h1>
+        <p>
+          Soluciones de energía de respaldo y continuidad operativa para industria, comercio, hoteles, hospitales,
+          logística y proyectos especiales con acompañamiento técnico y comercial.
+        </p>
+
+        <div class="hero__actions">
+          <a
+            class="button button--primary"
+            href={whatsappUrl}
+            target="_blank"
+            rel="noreferrer"
+            data-whatsapp-context="home-hero-primary"
+          >
+            Cotizar por WhatsApp
+          </a>
+          <a class="button button--ghost" href="/generadores/">
+            Ver generadores
+          </a>
+        </div>
+
+        <div class="hero__meta">
+          {
+            trustBar.slice(0, 3).map((item) => (
+              <article>
+                <strong>{item.split(" ").slice(0, 2).join(" ")}</strong>
+                <span>{item}</span>
+              </article>
+            ))
+          }
+        </div>
+      </div>
+
+      <div class="hero__visual">
+        <img
+          src={siteConfig.heroImage}
+          alt="Generador Generax para continuidad operativa en industria y comercio"
+          loading="eager"
+          fetchpriority="high"
+        />
+      </div>
+    </div>
+  </section>
+
+  <StatStrip items={companyMetrics} />
+
+  <section class="section-block section-block--light light-surface">
+    <div class="container">
+      <SectionHeading
+        eyebrow="Soluciones principales"
+        title="Energía de respaldo, transformación y servicio especializado."
+        intro="Atendemos proyectos que requieren continuidad operativa, soporte postventa y atención comercial ágil."
+      />
+
+      <div class="catalog-grid">
+        <article class="stack-card">
+          <span class="chip">Generadores</span>
+          <h3>Generadores diésel y gas para respaldo u operación continua.</h3>
+          <p>Desde aplicaciones comerciales hasta infraestructura crítica con distintas capacidades y configuraciones.</p>
+        </article>
+        <article class="stack-card">
+          <span class="chip">Transformadores</span>
+          <h3>Transformadores para distribución, pedestal, poste y tipo seco.</h3>
+          <p>Soluciones estándar y especiales para proyectos industriales, comerciales y desarrollos de infraestructura.</p>
+        </article>
+        <article class="stack-card">
+          <span class="chip">Servicios</span>
+          <h3>Puesta en marcha, mantenimiento y seguimiento postventa.</h3>
+          <p>Acompañamiento para selección, arranque, mantenimiento preventivo y continuidad de la operación.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-block section-block--light light-surface">
+    <div class="container">
+      <SectionHeading
+        eyebrow="Por qué elegir GENERAX"
+        title="Respaldo técnico, respuesta ágil y soluciones a la medida."
+        intro="Cada proyecto requiere una lectura distinta de capacidad, criticidad, combustible, transferencia y operación."
+      />
+
+      <div class="value-grid">
+        {
+          valueProps.map((item) => (
+            <article class="content-panel">
+              <h3>{item.title}</h3>
+              <p>{item.body}</p>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="section-block section-block--light light-surface">
+    <div class="container">
+      <SectionHeading
+        eyebrow="Sectores que atendemos"
+        title="Soluciones para distintos entornos de operación."
+        intro="Trabajamos con sectores que no pueden detener su operación por una falla eléctrica o una infraestructura insuficiente."
+      />
+
+      <div class="solution-grid">
+        {
+          industrySolutions.map((industry) => (
+            <article class="content-panel">
+              <span class="chip">{industry.slug.replace("-", " ")}</span>
+              <h3>{industry.title}</h3>
+              <p>{industry.body}</p>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="section-block section-block--light light-surface">
+    <div class="container">
+      <SectionHeading
+        eyebrow="Catálogo destacado"
+        title="Generadores destacados para distintas escalas de proyecto."
+        intro="Consulta capacidades, combustible, voltaje y tipo de aplicación antes de solicitar tu cotización."
+      />
+
+      <div class="catalog-grid">
+        {featuredProducts.map((product) => <ProductCard product={product} />)}
+      </div>
+    </div>
+  </section>
+
+  <section class="section-block section-block--light light-surface">
+    <div class="container content-grid">
+      <article class="content-panel">
+        <SectionHeading
+          eyebrow="Asesoría comercial"
+          title="Comparte los datos principales de tu proyecto."
+          intro="Con esta información podemos orientar mejor la selección del equipo y darte una atención más ágil."
+        />
+        <ul class="clean-list">
+          <li>Tipo de proyecto, industria y ciudad o estado.</li>
+          <li>Capacidad estimada o descripción de la carga.</li>
+          <li>Combustible preferido y fecha objetivo.</li>
+          <li>Si se trata de respaldo, operación continua o proyecto temporal.</li>
+        </ul>
+      </article>
+
+      <LeadForm
+        source="home-quote"
+        title="Solicita una cotización"
+        intro="Te atendemos por WhatsApp con una primera revisión comercial y técnica de tu proyecto."
+      />
+    </div>
+  </section>
+
+  <section class="section-block section-block--light light-surface">
+    <div class="container">
+      <SectionHeading
+        eyebrow="Preguntas frecuentes"
+        title="Resolvemos dudas comunes antes de cotizar."
+        intro="Si necesitas una solución de generación o transformación, aquí tienes respuestas rápidas para dar el siguiente paso."
+      />
+      <FaqList items={homeFaqs} />
+    </div>
+  </section>
+</BaseLayout>

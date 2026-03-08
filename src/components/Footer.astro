@@ -1,0 +1,44 @@
+---
+import { buildWhatsAppUrl, siteConfig } from "../data/site";
+
+interface Props {
+  navigation: { href: string; label: string }[];
+}
+
+const { navigation } = Astro.props;
+const whatsappUrl = buildWhatsAppUrl();
+---
+
+<footer class="site-footer">
+  <div class="container footer-grid">
+    <div>
+      <a href="/" class="brand-mark brand-mark--footer" aria-label="Ir al inicio de Generax">
+        <span class="brand-mark__logo-wrap">
+          <img class="brand-mark__logo" src={siteConfig.logo} alt="GENERAX Power" />
+        </span>
+        <span class="brand-mark__text">
+          <strong>Soluciones de energía</strong>
+          <small>Generadores, transformadores y servicios para continuidad operativa.</small>
+        </span>
+      </a>
+    </div>
+
+    <div>
+      <h3>Navegación</h3>
+      <div class="footer-links">
+        {navigation.map((item) => <a href={item.href}>{item.label}</a>)}
+      </div>
+    </div>
+
+    <div>
+      <h3>Contacto comercial</h3>
+      <div class="footer-links">
+        <a href={`tel:${siteConfig.telephone.replace(/\D/g, "")}`}>{siteConfig.telephone}</a>
+        <a href={whatsappUrl} target="_blank" rel="noreferrer" data-whatsapp-context="footer">
+          WhatsApp {siteConfig.whatsappDisplay}
+        </a>
+        <span>México · Proyectos industriales y comerciales</span>
+      </div>
+    </div>
+  </div>
+</footer>

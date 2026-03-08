@@ -1,0 +1,125 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import LeadForm from "../components/LeadForm.astro";
+import SectionHeading from "../components/SectionHeading.astro";
+import { buildWhatsAppUrl, serviceOffers } from "../data/site";
+import { breadcrumbSchema, organizationSchema, serviceSchema, webPageSchema, websiteSchema } from "../data/schema";
+
+const processSteps = [
+  "Diagnóstico comercial y técnico del proyecto.",
+  "Definición de capacidad, combustible, transferencia y alcance.",
+  "Cotización y coordinación comercial.",
+  "Coordinación de puesta en marcha y postventa.",
+];
+const whatsappUrl = buildWhatsAppUrl("Hola, necesito apoyo con servicios y postventa Generax.");
+
+const schema = [
+  organizationSchema(),
+  websiteSchema(),
+  webPageSchema(
+    "Servicios y postventa | GENERAX",
+    "Servicios asociados a proyectos de energía: dimensionamiento, arranque, mantenimiento y postventa.",
+    "/servicios/",
+  ),
+  breadcrumbSchema([
+    { name: "Inicio", path: "/" },
+    { name: "Servicios", path: "/servicios/" },
+  ]),
+  serviceSchema(
+    "Servicios técnicos y acompañamiento comercial",
+    "Dimensionamiento, puesta en marcha, mantenimiento y postventa para proyectos de energía y continuidad operativa.",
+    "/servicios/",
+  ),
+];
+---
+
+<BaseLayout
+  title="Servicios y postventa | GENERAX"
+  description="Servicios asociados a proyectos de energía: dimensionamiento, arranque, mantenimiento y postventa."
+  path="/servicios/"
+  imageAlt="Equipo de trabajo y respaldo comercial Generax"
+  schema={schema}
+>
+  <section class="page-hero">
+    <div class="container page-hero__grid">
+      <div class="page-hero__copy">
+        <div class="breadcrumb">
+          <a href="/">Inicio</a>
+          <span>/</span>
+          <span>Servicios</span>
+        </div>
+        <span class="hero__eyebrow">Servicios y postventa</span>
+        <h1>Servicios de puesta en marcha, mantenimiento y soporte.</h1>
+        <p>
+          Acompañamos a nuestros clientes desde la selección del equipo hasta el arranque y el seguimiento postventa para
+          sostener la continuidad operativa.
+        </p>
+        <div class="hero__actions">
+          <a
+            class="button button--primary"
+            href={whatsappUrl}
+            target="_blank"
+            rel="noreferrer"
+            data-whatsapp-context="servicios-hero-primary"
+          >
+            Solicitar atención por WhatsApp
+          </a>
+          <a class="button button--ghost" href="#servicios-generax">
+            Ver servicios
+          </a>
+        </div>
+      </div>
+
+      <div class="page-hero__card hero__visual">
+        <img
+          src="/media/IMG_5965-LA-EMPRESA-min.jpeg"
+          alt="Equipo de trabajo y respaldo comercial Generax"
+          loading="eager"
+          fetchpriority="high"
+        />
+      </div>
+    </div>
+  </section>
+
+  <section id="servicios-generax" class="section-block section-block--light light-surface">
+    <div class="container">
+      <SectionHeading
+        eyebrow="Oferta de servicio"
+        title="Servicios que complementan cada proyecto."
+        intro="Además de la venta del equipo, damos seguimiento técnico y comercial para reducir riesgos en la operación."
+      />
+      <div class="services-grid">
+        {
+          serviceOffers.map((service) => (
+            <article class="content-panel">
+              <h3>{service.title}</h3>
+              <p>{service.body}</p>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="section-block section-block--light light-surface">
+    <div class="container content-grid">
+      <article class="content-panel">
+        <SectionHeading
+          eyebrow="Proceso de atención"
+          title="Cómo acompañamos cada proyecto."
+          intro="Buscamos que la transición desde la cotización hasta el arranque sea clara y ordenada."
+        />
+        <ul class="clean-list">
+          {processSteps.map((step) => <li>{step}</li>)}
+        </ul>
+      </article>
+
+      <LeadForm
+        compact={true}
+        source="servicios-sidebar"
+        title="Solicitar seguimiento técnico-comercial"
+        intro="Ideal para proyectos que requieren mantenimiento, puesta en marcha o soporte posterior a la venta."
+      />
+    </div>
+  </section>
+</BaseLayout>

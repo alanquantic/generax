@@ -1,0 +1,181 @@
+---
+import { siteConfig } from "../data/site";
+
+interface Props {
+  title?: string;
+  intro?: string;
+  source?: string;
+  compact?: boolean;
+}
+
+const {
+  title = "Solicita tu cotización",
+  intro = "Compártenos los datos principales de tu proyecto y te atendemos por WhatsApp.",
+  source = "form",
+  compact = false,
+} = Astro.props;
+---
+
+<section class:list={["lead-panel", compact && "lead-panel--compact"]}>
+  <div>
+    <p class="lead-panel__eyebrow">Atención comercial</p>
+    <h3>{title}</h3>
+    <p>{intro}</p>
+  </div>
+
+  <form class="lead-form" data-lead-form data-source={source} data-whatsapp={siteConfig.whatsappNumber}>
+    <div class="lead-form__grid">
+      <label>
+        Empresa
+        <input name="company" type="text" placeholder="Nombre de la empresa" required />
+      </label>
+
+      <label>
+        Nombre
+        <input name="name" type="text" placeholder="Tu nombre" required />
+      </label>
+
+      <label>
+        Teléfono
+        <input name="phone" type="tel" placeholder="81 0000 0000" required />
+      </label>
+
+      <label>
+        Correo
+        <input name="email" type="email" placeholder="compras@empresa.com" required />
+      </label>
+
+      <label>
+        Ciudad / Estado
+        <input name="city" type="text" placeholder="Monterrey, Nuevo León" />
+      </label>
+
+      <label>
+        Industria
+        <select name="industry" required>
+          <option value="">Selecciona una industria</option>
+          <option>Manufactura</option>
+          <option>Hospitalidad</option>
+          <option>Salud</option>
+          <option>Logística</option>
+          <option>Construcción</option>
+          <option>Infraestructura crítica</option>
+          <option>Otra</option>
+        </select>
+      </label>
+
+      <label>
+        Necesidad
+        <select name="need" required>
+          <option value="">Selecciona una opción</option>
+          <option>Generador eléctrico</option>
+          <option>Transformador</option>
+          <option>Mantenimiento / servicio</option>
+          <option>Proyecto integral</option>
+        </select>
+      </label>
+    </div>
+
+    <label>
+      Contexto técnico o urgencia
+      <textarea
+        name="details"
+        rows={compact ? 3 : 4}
+        placeholder="Capacidad estimada, combustible, ciudad, fecha objetivo, tipo de operación o problema actual."
+      />
+    </label>
+
+    <input type="hidden" name="utm_source" />
+    <input type="hidden" name="utm_medium" />
+    <input type="hidden" name="utm_campaign" />
+    <input type="hidden" name="utm_term" />
+    <input type="hidden" name="utm_content" />
+    <input type="hidden" name="gclid" />
+    <input type="hidden" name="fbclid" />
+    <input type="hidden" name="landing_path" />
+    <input type="hidden" name="referrer" />
+    <input type="hidden" name="product_interest" />
+
+    <div class="lead-form__actions">
+      <button class="button button--primary" type="submit">
+        Enviar solicitud por WhatsApp
+      </button>
+      <a class="button button--ghost" href={`tel:${siteConfig.telephone.replace(/\D/g, "")}`}>
+        Llamar a ventas
+      </a>
+    </div>
+    <p class="lead-form__success" hidden>
+      Te llevamos a WhatsApp para continuar tu solicitud.
+    </p>
+  </form>
+</section>
+
+<script is:inline>
+  if (!window.__generaxLeadFormInit) {
+    window.__generaxLeadFormInit = true;
+
+    const attribution = JSON.parse(localStorage.getItem("generax_attribution") || "{}");
+    const forms = document.querySelectorAll("[data-lead-form]");
+
+    forms.forEach((form) => {
+      const success = form.querySelector(".lead-form__success");
+      let started = false;
+
+      Object.entries(attribution).forEach(([key, value]) => {
+        const input = form.querySelector(`input[name="${key}"]`);
+        if (input) input.value = String(value);
+      });
+
+      const productInterest = new URLSearchParams(window.location.search).get("producto");
+      const productInput = form.querySelector('input[name="product_interest"]');
+      if (productInput && productInterest) productInput.value = productInterest;
+
+      form.addEventListener("focusin", () => {
+        if (started) return;
+        started = true;
+        window.dataLayer.push({
+          event: "lead_form_start",
+          source_context: form.dataset.source,
+          page_path: window.location.pathname,
+        });
+      });
+
+      form.addEventListener("submit", (event) => {
+        event.preventDefault();
+
+        const data = new FormData(form);
+        const payload = Object.fromEntries(data.entries());
+        const message = [
+          "Solicitud de cotizacion GENERAX",
+          `Empresa: ${payload.company || ""}`,
+          `Nombre: ${payload.name || ""}`,
+          `Teléfono: ${payload.phone || ""}`,
+          `Correo: ${payload.email || ""}`,
+          `Ciudad / Estado: ${payload.city || ""}`,
+          `Industria: ${payload.industry || ""}`,
+          `Necesidad: ${payload.need || ""}`,
+          `Producto: ${payload.product_interest || ""}`,
+          `Detalle: ${payload.details || ""}`,
+          `Landing: ${payload.landing_path || window.location.pathname}`,
+          `UTM source: ${payload.utm_source || ""}`,
+          `UTM campaign: ${payload.utm_campaign || ""}`,
+        ]
+          .filter(Boolean)
+          .join("\n");
+
+        window.dataLayer.push({
+          event: "lead_submit",
+          source_context: form.dataset.source,
+          page_path: window.location.pathname,
+          industry: payload.industry,
+          need: payload.need,
+          product_interest: payload.product_interest,
+        });
+
+        success.hidden = false;
+        const url = `https://wa.me/${form.dataset.whatsapp}?text=${encodeURIComponent(message)}`;
+        window.open(url, "_blank", "noopener,noreferrer");
+      });
+    });
+  }
+</script>

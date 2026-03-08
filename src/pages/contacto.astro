@@ -1,0 +1,92 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import LeadForm from "../components/LeadForm.astro";
+import SectionHeading from "../components/SectionHeading.astro";
+import { siteConfig } from "../data/site";
+import { breadcrumbSchema, organizationSchema, serviceSchema, webPageSchema, websiteSchema } from "../data/schema";
+
+const schema = [
+  organizationSchema(),
+  websiteSchema(),
+  webPageSchema(
+    "Contacto y cotización | GENERAX",
+    "Solicita una cotización de generadores, transformadores o servicios en México. Comparte los datos de tu proyecto y recibe atención comercial.",
+    "/contacto/",
+    "ContactPage",
+  ),
+  breadcrumbSchema([
+    { name: "Inicio", path: "/" },
+    { name: "Contacto", path: "/contacto/" },
+  ]),
+  serviceSchema(
+    "Cotización y contacto comercial",
+    "Solicitud de cotización para generadores, transformadores y servicios con atención comercial en México.",
+    "/contacto/",
+  ),
+];
+---
+
+<BaseLayout
+  title="Contacto y cotización | GENERAX"
+  description="Solicita una cotización de generadores, transformadores o servicios en México. Comparte los datos de tu proyecto y recibe atención comercial."
+  path="/contacto/"
+  schema={schema}
+>
+  <section class="page-hero">
+    <div class="container page-hero__grid">
+      <div class="page-hero__copy">
+        <div class="breadcrumb">
+          <a href="/">Inicio</a>
+          <span>/</span>
+          <span>Contacto</span>
+        </div>
+        <span class="hero__eyebrow">Cotización</span>
+        <h1>Solicita una cotización para tu proyecto de energía.</h1>
+        <p>
+          Compártenos los datos principales de tu operación y te ayudamos a dimensionar la solución adecuada para tu
+          proyecto.
+        </p>
+      </div>
+
+      <div class="page-hero__card content-panel">
+        <h3>Atención comercial</h3>
+        <ul class="clean-list">
+          <li>Respuesta inicial en menos de 24 horas hábiles.</li>
+          <li>Atención por llamada y WhatsApp comercial.</li>
+          <li>Soporte para generadores, transformadores y servicios.</li>
+          <li>Seguimiento para proyectos estándar y especiales.</li>
+        </ul>
+        <div class="spacer-top">
+          <a class="button button--ghost" href={`tel:${siteConfig.telephone.replace(/\D/g, "")}`}>
+            {siteConfig.telephone}
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-block section-block--light light-surface">
+    <div class="container content-grid">
+      <LeadForm
+        source="contact-page"
+        title="Solicita una cotización"
+        intro="Completa los datos básicos y te atenderemos por WhatsApp para continuar con tu solicitud."
+      />
+
+      <article class="contact-card">
+        <SectionHeading
+          eyebrow="Información útil"
+          title="Qué conviene compartir para cotizar mejor."
+          intro="Si todavía no tienes todos los datos, podemos ayudarte a definirlos."
+        />
+        <ul class="clean-list">
+          <li>Ciudad o estado del proyecto.</li>
+          <li>Capacidad estimada o tipo de carga.</li>
+          <li>Combustible preferido si ya existe restricción.</li>
+          <li>Fecha objetivo o urgencia operativa.</li>
+          <li>Si es respaldo, continua o proyecto temporal.</li>
+        </ul>
+      </article>
+    </div>
+  </section>
+</BaseLayout>

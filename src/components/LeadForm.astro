@@ -138,6 +138,14 @@ const {
           source_context: form.dataset.source,
           page_path: window.location.pathname,
         });
+        if (typeof gtag === "function") {
+          gtag("event", "lead_form_start", {
+            event_category: "engagement",
+            event_label: form.dataset.source,
+            page_path: window.location.pathname,
+            content_group: window.__gxContentGroup || "other",
+          });
+        }
       });
 
       form.addEventListener("submit", (event) => {
@@ -171,6 +179,20 @@ const {
           need: payload.need,
           product_interest: payload.product_interest,
         });
+        if (typeof gtag === "function") {
+          gtag("event", "generate_lead", {
+            event_category: "conversion",
+            event_label: form.dataset.source,
+            currency: "MXN",
+            value: 1,
+            source_context: form.dataset.source,
+            industry: payload.industry,
+            need: payload.need,
+            product_interest: payload.product_interest,
+            page_path: window.location.pathname,
+            content_group: window.__gxContentGroup || "other",
+          });
+        }
 
         success.hidden = false;
         const url = `https://wa.me/${form.dataset.whatsapp}?text=${encodeURIComponent(message)}`;

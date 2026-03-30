@@ -54,6 +54,44 @@ const schema = [
   ogType="product"
   schema={schema}
 >
+  <script
+    is:inline
+    define:vars={{
+      _pi: product.id,
+      _pn: product.shortName,
+      _ps: product.segment,
+      _pp: product.price,
+      _pc: product.currency,
+      _pk: product.capacityKw,
+      _pf: product.fuel,
+    }}
+  >
+    if (typeof gtag === "function") {
+      gtag("event", "view_item", {
+        currency: _pc || "MXN",
+        value: _pp,
+        items: [{
+          item_id: String(_pi),
+          item_name: _pn,
+          item_category: _ps,
+          price: _pp,
+          quantity: 1,
+        }],
+        capacity_kw: _pk,
+        fuel_type: _pf,
+        content_group: "product-detail",
+      });
+    }
+    window.dataLayer.push({
+      event: "view_item",
+      product_id: _pi,
+      product_name: _pn,
+      product_segment: _ps,
+      product_price: _pp,
+      product_capacity_kw: _pk,
+      product_fuel: _pf,
+    });
+  </script>
   <section class="page-hero">
     <div class="container page-hero__grid">
       <div class="page-hero__copy">

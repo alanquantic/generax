@@ -39,6 +39,7 @@ const gtmId = import.meta.env.PUBLIC_GTM_ID;
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="google-site-verification" content="5xzN0oulBiL_se11NxI9rnJ9WpnOC5GevM-bvrTcZTo" />
     <title>{pageTitle}</title>
     <meta name="description" content={description} />
     <meta name="theme-color" content="#08111b" />
@@ -47,6 +48,7 @@ const gtmId = import.meta.env.PUBLIC_GTM_ID;
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
+    <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
     <link
       href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap"
       rel="stylesheet"
@@ -75,43 +77,168 @@ const gtmId = import.meta.env.PUBLIC_GTM_ID;
         />
       )
     }
+
+    <!-- Google tag (gtag.js) — GA4 -->
+    <script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-MJF9L16MPS"></script>
     <script is:inline>
       window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
 
-      (function captureAttribution() {
-        const keys = ["utm_source", "utm_medium", "utm_campaign", "utm_term", "utm_content", "gclid", "fbclid"];
-        const params = new URLSearchParams(window.location.search);
-        const stored = JSON.parse(localStorage.getItem("generax_attribution") || "{}");
-        const next = { ...stored };
+      (function () {
+        var path = window.location.pathname;
+        var cg = 'other';
+        if (path === '/') cg = 'home';
+        else if (path.startsWith('/generadores/') && path !== '/generadores/') cg = 'product-detail';
+        else if (path.startsWith('/generadores')) cg = 'generators';
+        else if (path.startsWith('/transformadores')) cg = 'transformers';
+        else if (path.startsWith('/soluciones')) cg = 'solutions';
+        else if (path.startsWith('/servicios')) cg = 'services';
+        else if (path.startsWith('/contacto')) cg = 'contact';
+        else if (path.startsWith('/empresa')) cg = 'about';
+        else if (path.startsWith('/tienda')) cg = 'store';
 
-        keys.forEach((key) => {
-          const value = params.get(key);
-          if (value) next[key] = value;
+        window.__gxContentGroup = cg;
+
+        gtag('config', 'G-MJF9L16MPS', {
+          content_group: cg,
+          send_page_view: false
         });
 
-        next.landing_path = window.location.pathname;
-        next.referrer = document.referrer || stored.referrer || "";
-        localStorage.setItem("generax_attribution", JSON.stringify(next));
+        /* ── Attribution capture ── */
+        var keys = ['utm_source','utm_medium','utm_campaign','utm_term','utm_content','gclid','fbclid'];
+        var params = new URLSearchParams(window.location.search);
+        var stored = JSON.parse(localStorage.getItem('generax_attribution') || '{}');
+        var next = Object.assign({}, stored);
 
-        window.dataLayer.push({
-          event: "generax_page_view",
-          page_path: window.location.pathname,
+        keys.forEach(function (k) { var v = params.get(k); if (v) next[k] = v; });
+        next.landing_path = path;
+        next.referrer = document.referrer || stored.referrer || '';
+        localStorage.setItem('generax_attribution', JSON.stringify(next));
+
+        dataLayer.push({
+          event: 'generax_page_view',
+          page_path: path,
           page_title: document.title,
-          ...next,
+          utm_source: next.utm_source || '',
+          utm_medium: next.utm_medium || '',
+          utm_campaign: next.utm_campaign || '',
+          utm_term: next.utm_term || '',
+          utm_content: next.utm_content || '',
+          gclid: next.gclid || '',
+          fbclid: next.fbclid || '',
+          landing_path: next.landing_path || '',
+          referrer: next.referrer || ''
+        });
+
+        gtag('event', 'page_view', {
+          page_title: document.title,
+          page_location: window.location.href,
+          page_path: path,
+          content_group: cg,
+          campaign_source: next.utm_source || '(direct)',
+          campaign_medium: next.utm_medium || '(none)',
+          campaign_name: next.utm_campaign || ''
+        });
+
+        /* ── WhatsApp CTA clicks (conversion) ── */
+        document.addEventListener('click', function (e) {
+          var t = e.target instanceof Element ? e.target.closest('[data-whatsapp-context]') : null;
+          if (!t) return;
+          var ctx = t.getAttribute('data-whatsapp-context') || '';
+          var txt = (t.textContent || '').trim();
+
+          dataLayer.push({ event: 'whatsapp_cta_click', page_path: path, context: ctx, label: txt });
+          gtag('event', 'whatsapp_cta_click', {
+            event_category: 'conversion',
+            event_label: ctx,
+            cta_context: ctx,
+            cta_text: txt,
+            page_path: path,
+            content_group: cg
+          });
+        });
+
+        /* ── Phone clicks (conversion) ── */
+        document.addEventListener('click', function (e) {
+          var t = e.target instanceof Element ? e.target.closest('a[href^="tel:"]') : null;
+          if (!t) return;
+          var phone = t.getAttribute('href') || '';
+
+          dataLayer.push({ event: 'phone_click', page_path: path, phone_number: phone });
+          gtag('event', 'phone_click', {
+            event_category: 'conversion',
+            event_label: phone,
+            link_text: (t.textContent || '').trim(),
+            page_path: path,
+            content_group: cg
+          });
+        });
+
+        /* ── FAQ expand (engagement) ── */
+        document.addEventListener('toggle', function (e) {
+          var el = e.target;
+          if (!el || !el.classList || !el.classList.contains('faq-item') || !el.open) return;
+          var q = el.querySelector('summary');
+          var question = q ? q.textContent.trim() : '';
+
+          dataLayer.push({ event: 'faq_expand', page_path: path, question: question });
+          gtag('event', 'faq_expand', {
+            event_category: 'engagement',
+            event_label: question,
+            page_path: path,
+            content_group: cg
+          });
+        }, true);
+
+        /* ── Scroll depth milestones ── */
+        (function () {
+          var milestones = [25, 50, 75, 90];
+          var fired = {};
+          var timer;
+          function check() {
+            var st = window.pageYOffset || document.documentElement.scrollTop;
+            var dh = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            if (dh <= 0) return;
+            var pct = Math.round(st / dh * 100);
+            milestones.forEach(function (m) {
+              if (pct >= m && !fired[m]) {
+                fired[m] = true;
+                dataLayer.push({ event: 'scroll_depth', percent_scrolled: m, page_path: path });
+                gtag('event', 'scroll_depth', {
+                  event_category: 'engagement',
+                  percent_scrolled: m,
+                  page_path: path,
+                  content_group: cg
+                });
+              }
+            });
+          }
+          window.addEventListener('scroll', function () {
+            clearTimeout(timer);
+            timer = setTimeout(check, 150);
+          }, { passive: true });
+        })();
+
+        /* ── Internal CTA clicks (engagement) ── */
+        document.addEventListener('click', function (e) {
+          var t = e.target instanceof Element
+            ? e.target.closest('a.button:not([data-whatsapp-context]):not([href^="tel:"])')
+            : null;
+          if (!t) return;
+          var href = t.getAttribute('href') || '';
+          if (href.startsWith('http') && href.indexOf(window.location.hostname) === -1) return;
+
+          dataLayer.push({ event: 'cta_click', page_path: path, cta_text: (t.textContent || '').trim(), destination_url: href });
+          gtag('event', 'cta_click', {
+            event_category: 'engagement',
+            event_label: (t.textContent || '').trim(),
+            destination_url: href,
+            page_path: path,
+            content_group: cg
+          });
         });
       })();
-
-      document.addEventListener("click", (event) => {
-        const target = event.target instanceof Element ? event.target.closest("[data-whatsapp-context]") : null;
-        if (!target) return;
-
-        window.dataLayer.push({
-          event: "whatsapp_cta_click",
-          page_path: window.location.pathname,
-          context: target.getAttribute("data-whatsapp-context"),
-          label: target.textContent?.trim() || "",
-        });
-      });
     </script>
     {
       gtmId && (

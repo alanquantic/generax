@@ -28,11 +28,13 @@ const whatsappUrl = buildWhatsAppUrl("Hola, necesito una cotización para una so
 const schema = [
   organizationSchema(),
   websiteSchema(),
-  webPageSchema(
-    "Soluciones por industria | GENERAX",
-    "Soluciones de energía de respaldo y operación continua por industria: manufactura, salud, hotelería, logística, construcción e infraestructura crítica.",
-    "/soluciones/",
-  ),
+  webPageSchema({
+    name: "Soluciones por industria | GENERAX",
+    description: "Soluciones de energía de respaldo y operación continua por industria: manufactura, salud, hotelería, logística, construcción e infraestructura crítica.",
+    path: "/soluciones/",
+    image: "/media/Generadores-a-diesel-mexico-2-1536x1152-1.jpeg",
+    speakableSelectors: [".page-hero h1", ".page-hero p"],
+  }),
   breadcrumbSchema([
     { name: "Inicio", path: "/" },
     { name: "Soluciones", path: "/soluciones/" },

@@ -19,8 +19,10 @@ import {
   breadcrumbSchema,
   faqSchema,
   itemListSchema,
+  localBusinessSchema,
   organizationSchema,
   serviceSchema,
+  siteNavigationSchema,
   webPageSchema,
   websiteSchema,
 } from "../data/schema";
@@ -29,11 +31,15 @@ const whatsappUrl = buildWhatsAppUrl("Hola, necesito una cotización para un gen
 const schema = [
   organizationSchema(),
   websiteSchema(),
-  webPageSchema(
-    "GENERAX | Generadores eléctricos y transformadores industriales en México",
-    "Venta de generadores eléctricos, transformadores industriales y soluciones de energía de respaldo para industria, comercio, hoteles, hospitales y proyectos especiales en México.",
-    "/",
-  ),
+  localBusinessSchema(),
+  siteNavigationSchema(),
+  webPageSchema({
+    name: "GENERAX | Generadores eléctricos y transformadores industriales en México",
+    description: "Venta de generadores eléctricos, transformadores industriales y soluciones de energía de respaldo para industria, comercio, hoteles, hospitales y proyectos especiales en México.",
+    path: "/",
+    image: siteConfig.ogImage,
+    speakableSelectors: [".hero__copy h1", ".hero__copy p", ".section-block h2"],
+  }),
   breadcrumbSchema([{ name: "Inicio", path: "/" }]),
   serviceSchema(
     "Sistemas de energía de respaldo y continuidad operativa",

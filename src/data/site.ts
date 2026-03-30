@@ -1,7 +1,7 @@
 export const siteConfig = {
   name: "GENERAX",
   legalName: "GENERAX Power",
-  url: "https://generax.com",
+  url: "https://www.generax.mx",
   description:
     "Venta de generadores eléctricos, transformadores industriales y soluciones de energía de respaldo para industria, comercio e infraestructura crítica en México.",
   locale: "es_MX",

@@ -16,11 +16,12 @@ const whatsappUrl = buildWhatsAppUrl("Hola, necesito apoyo con servicios y postv
 const schema = [
   organizationSchema(),
   websiteSchema(),
-  webPageSchema(
-    "Servicios y postventa | GENERAX",
-    "Servicios asociados a proyectos de energía: dimensionamiento, arranque, mantenimiento y postventa.",
-    "/servicios/",
-  ),
+  webPageSchema({
+    name: "Servicios y postventa | GENERAX",
+    description: "Servicios asociados a proyectos de energía: dimensionamiento, arranque, mantenimiento y postventa.",
+    path: "/servicios/",
+    speakableSelectors: [".page-hero h1", ".page-hero p", "#servicios-generax h2"],
+  }),
   breadcrumbSchema([
     { name: "Inicio", path: "/" },
     { name: "Servicios", path: "/servicios/" },

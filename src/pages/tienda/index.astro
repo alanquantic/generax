@@ -19,12 +19,14 @@ const highestPrice = [...products].sort((left, right) => right.price - left.pric
 const schema = [
   organizationSchema(),
   websiteSchema(),
-  webPageSchema(
-    "Tienda | GENERAX",
-    "Tienda de generadores Generax con fotos, capacidades, precios publicados y atención comercial por WhatsApp.",
-    "/tienda/",
-    "CollectionPage",
-  ),
+  webPageSchema({
+    name: "Tienda | GENERAX",
+    description: "Tienda de generadores Generax con fotos, capacidades, precios publicados y atención comercial por WhatsApp.",
+    path: "/tienda/",
+    type: "CollectionPage",
+    image: "/media/GENERAX-Generador-Electrico9.jpg",
+    speakableSelectors: [".page-hero h1", ".page-hero p", ".page-hero .clean-list"],
+  }),
   breadcrumbSchema([
     { name: "Inicio", path: "/" },
     { name: "Tienda", path: "/tienda/" },

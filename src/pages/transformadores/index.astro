@@ -17,12 +17,14 @@ const whatsappUrl = buildWhatsAppUrl("Hola, necesito una cotización de un trans
 const schema = [
   organizationSchema(),
   websiteSchema(),
-  webPageSchema(
-    "Transformadores industriales | GENERAX",
-    "Venta y fabricación de transformadores eléctricos para distribución, pedestal, poste, tipo seco y proyectos especiales en México.",
-    "/transformadores/",
-    "CollectionPage",
-  ),
+  webPageSchema({
+    name: "Transformadores industriales | GENERAX",
+    description: "Venta y fabricación de transformadores eléctricos para distribución, pedestal, poste, tipo seco y proyectos especiales en México.",
+    path: "/transformadores/",
+    type: "CollectionPage",
+    image: "/media/transformadores-generax-2.jpeg",
+    speakableSelectors: [".page-hero h1", ".page-hero p", ".page-hero .clean-list"],
+  }),
   breadcrumbSchema([
     { name: "Inicio", path: "/" },
     { name: "Transformadores", path: "/transformadores/" },

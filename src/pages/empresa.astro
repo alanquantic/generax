@@ -24,12 +24,14 @@ const differentiators = [
 const schema = [
   organizationSchema(),
   websiteSchema(),
-  webPageSchema(
-    "Empresa | GENERAX",
-    "Conoce la historia de Generax, su enfoque en continuidad operativa y su propuesta de valor para proyectos industriales y comerciales en México y Latinoamérica.",
-    "/empresa/",
-    "AboutPage",
-  ),
+  webPageSchema({
+    name: "Empresa | GENERAX",
+    description: "Conoce la historia de Generax, su enfoque en continuidad operativa y su propuesta de valor para proyectos industriales y comerciales en México y Latinoamérica.",
+    path: "/empresa/",
+    type: "AboutPage",
+    image: "/media/IMG_5965-LA-EMPRESA-min.jpeg",
+    speakableSelectors: [".page-hero h1", ".page-hero p", "#historia-generax p"],
+  }),
   breadcrumbSchema([
     { name: "Inicio", path: "/" },
     { name: "Empresa", path: "/empresa/" },

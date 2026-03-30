@@ -1,0 +1,21 @@
+{
+  "name": "GENERAX - Generadores y transformadores industriales en México",
+  "short_name": "GENERAX",
+  "description": "Venta de generadores eléctricos, transformadores industriales y soluciones de energía de respaldo para industria, comercio e infraestructura crítica en México.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#08111b",
+  "theme_color": "#08111b",
+  "lang": "es-MX",
+  "dir": "ltr",
+  "categories": ["business", "industrial"],
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

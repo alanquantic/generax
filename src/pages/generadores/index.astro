@@ -20,12 +20,14 @@ const whatsappUrl = buildWhatsAppUrl("Hola, necesito una cotización de un gener
 const schema = [
   organizationSchema(),
   websiteSchema(),
-  webPageSchema(
-    "Generadores industriales | GENERAX",
-    "Venta de generadores eléctricos industriales y comerciales en México. Equipos diésel y gas para respaldo, operación continua y proyectos especiales.",
-    "/generadores/",
-    "CollectionPage",
-  ),
+  webPageSchema({
+    name: "Generadores industriales | GENERAX",
+    description: "Venta de generadores eléctricos industriales y comerciales en México. Equipos diésel y gas para respaldo, operación continua y proyectos especiales.",
+    path: "/generadores/",
+    type: "CollectionPage",
+    image: "/media/Generador-Generax-12.jpeg",
+    speakableSelectors: [".page-hero h1", ".page-hero p", ".page-hero .clean-list"],
+  }),
   breadcrumbSchema([
     { name: "Inicio", path: "/" },
     { name: "Generadores", path: "/generadores/" },

@@ -31,11 +31,13 @@ const useCases =
 const schema = [
   organizationSchema(),
   websiteSchema(),
-  webPageSchema(
-    `${product.shortName} | GENERAX`,
-    product.summary,
-    `/generadores/${product.routeSlug}/`,
-  ),
+  webPageSchema({
+    name: `${product.shortName} | GENERAX`,
+    description: product.summary,
+    path: `/generadores/${product.routeSlug}/`,
+    image: product.image,
+    speakableSelectors: [".page-hero h1", ".page-hero p", ".hero__price", ".spec-grid"],
+  }),
   breadcrumbSchema([
     { name: "Inicio", path: "/" },
     { name: "Generadores", path: "/generadores/" },

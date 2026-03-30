@@ -8,12 +8,13 @@ import { breadcrumbSchema, organizationSchema, serviceSchema, webPageSchema, web
 const schema = [
   organizationSchema(),
   websiteSchema(),
-  webPageSchema(
-    "Contacto y cotización | GENERAX",
-    "Solicita una cotización de generadores, transformadores o servicios en México. Comparte los datos de tu proyecto y recibe atención comercial.",
-    "/contacto/",
-    "ContactPage",
-  ),
+  webPageSchema({
+    name: "Contacto y cotización | GENERAX",
+    description: "Solicita una cotización de generadores, transformadores o servicios en México. Comparte los datos de tu proyecto y recibe atención comercial.",
+    path: "/contacto/",
+    type: "ContactPage",
+    speakableSelectors: [".page-hero h1", ".page-hero p"],
+  }),
   breadcrumbSchema([
     { name: "Inicio", path: "/" },
     { name: "Contacto", path: "/contacto/" },

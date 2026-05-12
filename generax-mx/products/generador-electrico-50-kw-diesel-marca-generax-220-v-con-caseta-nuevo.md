@@ -2,9 +2,9 @@
 title: Generador Eléctrico 50 KW Diesel Marca Generax 220 V Con Caseta Nuevo
 slug: generador-electrico-50-kw-diesel-marca-generax-220-v-con-caseta-nuevo
 url: https://generax.mx/producto/generador-electrico-50-kw-diesel-marca-generax-220-v-con-caseta-nuevo/
-price: '331500'
-regular_price: '331500'
-sale_price: '331500'
+price: '15950'
+regular_price: '15950'
+sale_price: '15950'
 currency: USD
 categories:
 - Generadores Eléctricos

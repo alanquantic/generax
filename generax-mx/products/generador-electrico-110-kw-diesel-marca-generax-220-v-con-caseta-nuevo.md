@@ -2,9 +2,9 @@
 title: Generador Eléctrico 110 KW Diesel Marca Generax 220 V Con Caseta Nuevo
 slug: generador-electrico-110-kw-diesel-marca-generax-220-v-con-caseta-nuevo
 url: https://generax.mx/producto/generador-electrico-110-kw-diesel-marca-generax-220-v-con-caseta-nuevo/
-price: '21950'
-regular_price: '21950'
-sale_price: '21950'
+price: '20950'
+regular_price: '20950'
+sale_price: '20950'
 currency: USD
 categories:
 - Generador Eléctrico
